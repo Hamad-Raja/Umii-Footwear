@@ -30,7 +30,7 @@ const Navbar = () => {
   const currentPath = `${location.pathname}${location.search}`;
   const isActiveLink = (to) => currentPath === to || (to === '/' && location.pathname === '/' && !location.search);
   const getNavClass = (to) =>
-    `relative px-1 py-2 text-[11px] font-black uppercase tracking-[0.28em] transition-colors ${
+    `relative py-3 text-[12px] md:text-[13px] font-black uppercase tracking-[0.36em] transition-colors ${
       isActiveLink(to) ? 'text-onyx' : 'text-gray-500 hover:text-onyx'
     }`;
 
@@ -46,39 +46,39 @@ const Navbar = () => {
   };
 
   return (
-    <header className="bg-white/95 backdrop-blur-xl sticky top-0 z-50 border-b border-gray-200 shadow-sm transition-all">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[72px] md:h-20 gap-4">
+    <header className="bg-white sticky top-0 z-50 border-b border-gray-200 shadow-sm transition-all">
+      <div className="w-full px-5 sm:px-8 lg:px-12">
+        <div className="flex items-center justify-between h-[76px] lg:h-[104px] gap-5">
           {/* Logo */}
-          <div className="flex items-center gap-8">
-            <Link to="/" className="group flex flex-col items-start text-onyx">
-              <span className="text-3xl leading-none font-heading font-black tracking-tighter group-hover:text-gold transition-colors">
+          <div className="flex items-center gap-10 xl:gap-14">
+            <Link to="/" className="group flex min-w-[130px] flex-col items-start">
+              <span className="text-[34px] sm:text-[40px] lg:text-[44px] leading-none font-heading font-black tracking-[-0.06em] text-gold group-hover:text-gold-dark transition-colors">
                 SOLEA
               </span>
-              <span className="text-[8px] font-black uppercase tracking-[0.42em] text-gray-400 mt-1">
+              <span className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.48em] text-gray-400 mt-2 ml-1">
                 Footwear
               </span>
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-7">
+            <nav className="hidden lg:flex items-center gap-9 xl:gap-12">
               {navItems.map((item) => (
                 <Link key={item.label} to={item.to} className={getNavClass(item.to)}>
                   {item.label}
-                  <span className={`absolute left-1 right-1 -bottom-1 h-[2px] bg-gold transition-transform origin-left ${isActiveLink(item.to) ? 'scale-x-100' : 'scale-x-0'}`} />
+                  <span className={`absolute left-0 right-[0.36em] -bottom-1 h-[2px] bg-gold transition-transform origin-left ${isActiveLink(item.to) ? 'scale-x-100' : 'scale-x-0'}`} />
                 </Link>
               ))}
             </nav>
           </div>
 
           {/* Icons */}
-          <div className="flex items-center justify-end gap-2 md:gap-3">
-            <Link to="/shop" className="hidden lg:inline-flex items-center bg-onyx text-white px-5 h-10 text-[10px] font-black uppercase tracking-[0.22em] hover:bg-gold hover:text-onyx transition-colors">
+          <div className="flex items-center justify-end gap-2 sm:gap-4">
+            <Link to="/shop" className="hidden md:inline-flex items-center justify-center bg-onyx text-white px-7 lg:px-9 h-12 lg:h-[60px] text-[10px] lg:text-[12px] font-black uppercase tracking-[0.28em] hover:bg-gold hover:text-onyx transition-colors">
               Shop Now
             </Link>
 
-            <Link to="/shop" className="h-10 w-10 hidden sm:inline-flex items-center justify-center border border-gray-200 text-gray-500 hover:border-onyx hover:text-onyx transition-colors">
-              <Search size={18} />
+            <Link to="/shop" className="h-11 w-11 sm:h-12 sm:w-12 lg:h-[60px] lg:w-[60px] hidden sm:inline-flex items-center justify-center border border-gray-200 text-gray-500 hover:border-onyx hover:text-onyx hover:bg-gray-50 transition-colors">
+              <Search size={24} strokeWidth={1.8} />
             </Link>
 
             {/* Profile Menu */}
@@ -86,7 +86,7 @@ const Navbar = () => {
               <div className="relative">
                 <button 
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="h-10 inline-flex items-center gap-2 border border-gray-200 px-3 text-onyx hover:border-onyx hover:text-gold transition-colors font-bold text-[10px] uppercase tracking-[0.2em]"
+                  className="h-11 sm:h-12 lg:h-[60px] inline-flex items-center gap-2 border border-gray-200 px-3 lg:px-4 text-onyx hover:border-onyx hover:text-gold transition-colors font-bold text-[10px] uppercase tracking-[0.2em]"
                 >
                   {userInfo.name.split(' ')[0]} <ChevronDown size={14} />
                 </button>
@@ -102,8 +102,8 @@ const Navbar = () => {
                 )}
               </div>
             ) : (
-                <Link to="/login" className="h-10 w-10 inline-flex items-center justify-center border border-gray-200 text-onyx hover:border-onyx hover:text-gold transition-colors relative group">
-                    <User size={18} />
+                <Link to="/login" className="h-11 w-11 sm:h-12 sm:w-12 lg:h-[60px] lg:w-[60px] inline-flex items-center justify-center border border-gray-200 text-onyx hover:border-onyx hover:text-gold hover:bg-gray-50 transition-colors relative group">
+                    <User size={23} strokeWidth={1.9} />
                 </Link>
             )}
 
@@ -112,7 +112,7 @@ const Navbar = () => {
               <div className="relative hidden lg:block">
                  <button 
                   onClick={() => setShowAdminMenu(!showAdminMenu)}
-                  className="h-10 inline-flex items-center gap-1 border border-gold/40 px-3 text-gold font-black transition-colors text-[10px] uppercase tracking-[0.2em] hover:bg-gold hover:text-onyx"
+                  className="h-12 lg:h-[60px] inline-flex items-center gap-1 border border-gold/40 px-3 text-gold font-black transition-colors text-[10px] uppercase tracking-[0.2em] hover:bg-gold hover:text-onyx"
                 >
                   Admin <ChevronDown size={14} />
                 </button>
@@ -132,8 +132,8 @@ const Navbar = () => {
               </div>
             )}
 
-            <Link to="/cart" className="h-10 w-10 inline-flex items-center justify-center bg-white border border-gray-200 text-onyx hover:border-onyx hover:text-gold transition-colors relative">
-              <ShoppingCart size={18} />
+            <Link to="/cart" className="h-11 w-11 sm:h-12 sm:w-12 lg:h-[60px] lg:w-[60px] inline-flex items-center justify-center bg-white border border-gray-200 text-onyx hover:border-onyx hover:text-gold hover:bg-gray-50 transition-colors relative">
+              <ShoppingCart size={23} strokeWidth={1.9} />
               {cartItems.length > 0 && (
                 <span className="absolute -top-1 -right-1 bg-gold text-onyx text-[9px] font-black h-5 min-w-5 px-1 rounded-full flex items-center justify-center border-2 border-white">
                     {cartItems.reduce((a, c) => a + c.qty, 0)}
@@ -143,7 +143,7 @@ const Navbar = () => {
 
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="h-10 w-10 inline-flex md:hidden items-center justify-center border border-gray-200 text-onyx hover:border-onyx hover:text-gold transition-colors"
+              className="h-11 w-11 inline-flex lg:hidden items-center justify-center border border-gray-200 text-onyx hover:border-onyx hover:text-gold transition-colors"
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -154,7 +154,7 @@ const Navbar = () => {
 
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 animate-fade-in absolute inset-x-0 top-[72px] z-40 shadow-2xl">
+        <div className="lg:hidden bg-white border-t border-gray-100 animate-fade-in absolute inset-x-0 top-[76px] z-40 shadow-2xl">
           <div className="px-5 py-5 space-y-2">
             {navItems.map((item) => (
               <Link
