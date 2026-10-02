@@ -50,7 +50,7 @@ const Home = () => {
               variants={fadeInUp}
               className="inline-block text-gold font-bold tracking-[0.3em] uppercase mb-4 text-sm"
             >
-              Umii Luxury Footwear
+              Solea Luxury Footwear
             </motion.span>
             <motion.h1 
               variants={fadeInUp}
@@ -98,8 +98,8 @@ const Home = () => {
             className="grid grid-cols-1 md:grid-cols-3 gap-8"
           >
             {[
-              { title: 'Performance', img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2070&auto=format&fit=crop', link: '/shop?category=Men' },
-              { title: 'Lifestyle', img: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=1974&auto=format&fit=crop', link: '/shop?category=Women' },
+              { title: 'Men', img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2070&auto=format&fit=crop', link: '/shop?category=Mens%20Sneakers' },
+              { title: 'Women', img: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=1974&auto=format&fit=crop', link: '/shop?category=Womens%20Sneakers' },
               { title: 'Signature', img: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2012&auto=format&fit=crop', link: '/shop' },
             ].map((cat, idx) => (
               <motion.div 
@@ -110,7 +110,7 @@ const Home = () => {
                 <img src={cat.img} alt={cat.title} className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-onyx/90 via-onyx/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
                 <div className="absolute bottom-12 left-12 transition-all duration-500 group-hover:bottom-14">
-                  <span className="text-gold font-bold tracking-[0.3em] uppercase text-[9px] mb-2 block">Umii Series</span>
+                  <span className="text-gold font-bold tracking-[0.3em] uppercase text-[9px] mb-2 block">Solea Series</span>
                   <h3 className="text-4xl text-white font-black uppercase mb-6 tracking-tighter">{cat.title}</h3>
                   <div className="w-12 h-[1px] bg-gold mb-6 group-hover:w-24 transition-all duration-500" />
                   <Link to={cat.link} className="text-white text-[10px] font-black tracking-[0.4em] uppercase flex items-center gap-2 group-hover:text-gold transition-colors">
@@ -159,9 +159,12 @@ const Home = () => {
                 <Link to={`/product/${product._id}`}>
                   <div className="relative aspect-[3/4] overflow-hidden bg-gray-200 mb-6 group">
                     <img 
-                      src={product.images[0]} 
+                      src={product.images?.[0] || 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=1200&auto=format&fit=crop'} 
                       alt={product.name} 
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                      onError={(e) => {
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=1200&auto=format&fit=crop'
+                      }}
                     />
                     {/* Fast Shop Button on hover */}
                     <div className="absolute inset-x-0 bottom-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
@@ -208,7 +211,7 @@ const Home = () => {
               <span className="text-gold font-bold tracking-[0.3em] uppercase text-xs">The Excellence</span>
               <h2 className="text-6xl font-black leading-tight">Beyond The <br /> Silhouette.</h2>
               <p className="text-gray-400 text-lg font-light leading-relaxed">
-                At Umii, we don't just make shoes; we architect experiences. Every pair undergoes a 200-step assembly process, combining aerospace-grade cushioning with ethically sourced premium leathers.
+                At Solea, we don't just make shoes; we architect experiences. Every pair undergoes a 200-step assembly process, combining aerospace-grade cushioning with ethically sourced premium leathers.
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-6">

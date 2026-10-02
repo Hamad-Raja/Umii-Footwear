@@ -31,7 +31,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="bg-white/90 backdrop-blur-xl sticky top-0 z-50 border-b border-gray-100 transition-all">
+    <header className="bg-white/95 backdrop-blur-xl sticky top-0 z-50 border-b border-gray-200/70 shadow-sm shadow-black/[0.02] transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           
@@ -47,8 +47,8 @@ const Navbar = () => {
 
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="text-3xl font-heading font-black tracking-tighter text-onyx">
-              UMII
+            <Link to="/" className="text-3xl font-heading font-black tracking-tighter text-onyx hover:text-gold transition-colors">
+              SOLEA
             </Link>
           </div>
 
@@ -57,11 +57,11 @@ const Navbar = () => {
             <Link to="/" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 hover:text-onyx transition-colors">
               Home
             </Link>
-            <Link to="/shop" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-onyx transition-colors">
-              Mens
+            <Link to="/shop?category=Mens%20Sneakers" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-onyx transition-colors">
+              Men
             </Link>
-            <Link to="/shop" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-onyx transition-colors">
-              Womens
+            <Link to="/shop?category=Womens%20Sneakers" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-onyx transition-colors">
+              Women
             </Link>
             <Link to="/about" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-onyx transition-colors">
               Heritage
@@ -142,8 +142,8 @@ const Navbar = () => {
         <div className="md:hidden bg-white border-t border-gray-100 animate-fade-in absolute inset-x-0 top-20 z-40 shadow-xl">
           <div className="px-6 py-10 space-y-6">
             <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="block text-xs font-black uppercase tracking-[0.4em] text-onyx py-2">Home</Link>
-            <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} className="block text-xs font-black uppercase tracking-[0.4em] text-onyx py-2">Mens Collection</Link>
-            <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} className="block text-xs font-black uppercase tracking-[0.4em] text-onyx py-2">Womens Collection</Link>
+            <Link to="/shop?category=Mens%20Sneakers" onClick={() => setIsMobileMenuOpen(false)} className="block text-xs font-black uppercase tracking-[0.4em] text-onyx py-2">Men Collection</Link>
+            <Link to="/shop?category=Womens%20Sneakers" onClick={() => setIsMobileMenuOpen(false)} className="block text-xs font-black uppercase tracking-[0.4em] text-onyx py-2">Women Collection</Link>
             <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="block text-xs font-black uppercase tracking-[0.4em] text-onyx py-2">Our Heritage</Link>
             {userInfo && (
               <button onClick={() => { logoutHandler(); setIsMobileMenuOpen(false); }} className="block w-full text-left text-xs font-black uppercase tracking-[0.4em] text-red-500 py-2">Logout</button>

@@ -44,7 +44,7 @@ const Register = () => {
       <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-sm shadow-xl shadow-gray-200/50">
         <div>
           <h2 className="text-center text-3xl font-heading font-extrabold text-charcoal">
-            Join Umii
+            Join Solea
           </h2>
           <p className="mt-2 text-center text-sm text-gray-500">
             Already have an account?{' '}
