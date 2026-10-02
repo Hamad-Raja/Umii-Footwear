@@ -2,15 +2,14 @@ import React, { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
-  ShoppingCart,
-  User,
+  ShoppingBag,
+  UserRound,
   Search,
   Menu,
+  X,
   LogOut,
   LayoutDashboard,
   UserCircle,
-  ChevronDown,
-  X,
 } from 'lucide-react'
 
 import { useLogoutMutation } from '../slices/usersApiSlice'
@@ -25,11 +24,10 @@ const navItems = [
 ]
 
 const Navbar = () => {
-  const [showUserMenu, setShowUserMenu] = useState(false)
-  const [showAdminMenu, setShowAdminMenu] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [showUserMenu, setShowUserMenu] = useState(false)
 
-  const { cartItems } = useSelector((state) => state.cart)
+  const { cartItems = [] } = useSelector((state) => state.cart)
   const { userInfo } = useSelector((state) => state.auth)
 
   const dispatch = useDispatch()
@@ -48,18 +46,10 @@ const Navbar = () => {
     return currentPath === to
   }
 
-  const getNavClass = (to) =>
-    `relative py-3 text-[12px] md:text-[13px] font-black uppercase tracking-[0.36em] transition-colors ${
-      isActiveLink(to)
-        ? 'text-onyx'
-        : 'text-gray-500 hover:text-onyx'
-    }`
-
-  const closeMenus = () => {
-    setShowUserMenu(false)
-    setShowAdminMenu(false)
-    setIsMobileMenuOpen(false)
-  }
+  const cartCount = cartItems.reduce(
+    (total, item) => total + (item.qty || 0),
+    0
+  )
 
   const logoutHandler = async () => {
     try {
@@ -68,292 +58,233 @@ const Navbar = () => {
       dispatch(logout())
       dispatch(clearCartItems())
 
-      closeMenus()
+      setShowUserMenu(false)
+      setIsMobileMenuOpen(false)
+
       navigate('/login')
-    } catch (err) {
-      console.error('Logout failed:', err)
+    } catch (error) {
+      console.error(error)
     }
   }
 
-  const cartCount = cartItems.reduce(
-    (total, item) => total + (item.qty || 0),
-    0
-  )
-
-  const firstName = userInfo?.name
-    ? userInfo.name.split(' ')[0]
-    : 'Account'
-
   return (
-    <header className="bg-white/95 backdrop-blur-xl sticky top-0 z-50 border-b border-gray-200/70 shadow-sm shadow-black/[0.02] transition-all">
-      <div className="w-full px-5 sm:px-8 lg:px-12">
-        <div className="flex items-center justify-between h-[76px] lg:h-[104px] gap-5">
+    <header className="sticky top-0 z-50 w-full bg-[#070707] border-b border-white/5">
+      <div className="w-full px-5 sm:px-8 lg:px-12 xl:px-16">
+        <div className="h-[64px] lg:h-[72px] flex items-center justify-between">
 
-          {/* Logo + Desktop Navigation */}
-          <div className="flex items-center gap-10 xl:gap-14">
+          {/* LEFT SIDE */}
+          <div className="flex items-center gap-10 lg:gap-14 xl:gap-16">
+
+            {/* Logo */}
             <Link
               to="/"
-              onClick={closeMenus}
-              className="group flex min-w-[130px] flex-col items-start"
+              className="flex flex-col items-start leading-none group"
             >
-              <span className="text-[34px] sm:text-[40px] lg:text-[44px] leading-none font-heading font-black tracking-[-0.06em] text-gold group-hover:text-gold-dark transition-colors">
+              <span className="text-[#d6ad3c] text-[24px] sm:text-[26px] lg:text-[28px] font-black tracking-[0.03em] leading-none transition-colors group-hover:text-[#e6c25b]">
                 SOLEA
               </span>
 
-              <span className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.48em] text-gray-400 mt-2 ml-1">
+              <span className="mt-[4px] ml-[2px] text-[5px] sm:text-[6px] font-bold uppercase tracking-[0.55em] text-[#d6ad3c]/75">
                 Footwear
               </span>
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-9 xl:gap-12">
+            <nav className="hidden md:flex items-center gap-8 lg:gap-10">
               {navItems.map((item) => (
                 <Link
                   key={item.label}
                   to={item.to}
-                  className={getNavClass(item.to)}
-                  onClick={() => {
-                    setShowUserMenu(false)
-                    setShowAdminMenu(false)
-                  }}
+                  className={`relative py-6 text-[7px] lg:text-[8px] font-bold uppercase tracking-[0.38em] transition-colors ${
+                    isActiveLink(item.to)
+                      ? 'text-white'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
                 >
                   {item.label}
 
-                  <span
-                    className={`absolute left-0 right-[0.36em] -bottom-1 h-[2px] bg-gold transition-transform origin-left ${
-                      isActiveLink(item.to)
-                        ? 'scale-x-100'
-                        : 'scale-x-0'
-                    }`}
-                  />
+                  {isActiveLink(item.to) && (
+                    <span className="absolute bottom-[15px] left-0 right-[0.38em] h-[1px] bg-[#d6ad3c]" />
+                  )}
                 </Link>
               ))}
             </nav>
           </div>
 
-          {/* Right Side Actions */}
-          <div className="flex items-center justify-end gap-2 sm:gap-4">
-
-            {/* Shop Now */}
-            <Link
-              to="/shop"
-              className="hidden md:inline-flex items-center justify-center bg-onyx text-white px-7 lg:px-9 h-12 lg:h-[60px] text-[10px] lg:text-[12px] font-black uppercase tracking-[0.28em] hover:bg-gold hover:text-onyx transition-colors"
-            >
-              Shop Now
-            </Link>
+          {/* RIGHT SIDE */}
+          <div className="flex items-center gap-4 sm:gap-5">
 
             {/* Search */}
             <Link
               to="/shop"
-              aria-label="Search products"
-              className="h-11 w-11 sm:h-12 sm:w-12 lg:h-[60px] lg:w-[60px] hidden sm:inline-flex items-center justify-center border border-gray-200 text-gray-500 hover:border-onyx hover:text-onyx hover:bg-gray-50 transition-colors"
+              aria-label="Search"
+              className="hidden sm:flex items-center justify-center text-gray-400 hover:text-[#d6ad3c] transition-colors"
             >
-              <Search size={24} strokeWidth={1.8} />
+              <Search
+                size={13}
+                strokeWidth={1.7}
+              />
             </Link>
 
-            {/* User Menu */}
-            {userInfo ? (
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowUserMenu((prev) => !prev)
-                    setShowAdminMenu(false)
-                  }}
-                  className="h-11 sm:h-12 lg:h-[60px] inline-flex items-center gap-2 border border-gray-200 px-3 lg:px-4 text-onyx hover:border-onyx hover:text-gold transition-colors font-bold text-[10px] uppercase tracking-[0.2em]"
+            {/* Account */}
+            <div className="relative">
+              {userInfo ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setShowUserMenu((prev) => !prev)}
+                    className="flex items-center justify-center text-gray-400 hover:text-[#d6ad3c] transition-colors"
+                    aria-label="Account menu"
+                  >
+                    <UserRound
+                      size={13}
+                      strokeWidth={1.7}
+                    />
+                  </button>
+
+                  {showUserMenu && (
+                    <div className="absolute right-0 top-8 w-48 bg-[#111111] border border-white/10 shadow-2xl py-2">
+
+                      <div className="px-4 py-3 border-b border-white/10">
+                        <p className="text-[9px] uppercase tracking-[0.2em] text-white font-bold">
+                          {userInfo.name || 'Account'}
+                        </p>
+                      </div>
+
+                      <Link
+                        to="/profile"
+                        onClick={() => setShowUserMenu(false)}
+                        className="flex items-center gap-3 px-4 py-3 text-[8px] uppercase tracking-[0.22em] font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                      >
+                        <UserCircle size={14} />
+                        Profile
+                      </Link>
+
+                      {userInfo.isAdmin && (
+                        <Link
+                          to="/admin/dashboard"
+                          onClick={() => setShowUserMenu(false)}
+                          className="flex items-center gap-3 px-4 py-3 text-[8px] uppercase tracking-[0.22em] font-bold text-gray-400 hover:text-[#d6ad3c] hover:bg-white/5 transition-colors"
+                        >
+                          <LayoutDashboard size={14} />
+                          Admin
+                        </Link>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={logoutHandler}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-left text-[8px] uppercase tracking-[0.22em] font-bold text-red-400 hover:bg-white/5 transition-colors"
+                      >
+                        <LogOut size={14} />
+                        Logout
+                      </button>
+
+                    </div>
+                  )}
+                </>
+              ) : (
+                <Link
+                  to="/login"
+                  aria-label="Login"
+                  className="flex items-center justify-center text-gray-400 hover:text-[#d6ad3c] transition-colors"
                 >
-                  {firstName}
-
-                  <ChevronDown
-                    size={14}
-                    className={`transition-transform ${
-                      showUserMenu ? 'rotate-180' : ''
-                    }`}
+                  <UserRound
+                    size={13}
+                    strokeWidth={1.7}
                   />
-                </button>
-
-                {showUserMenu && (
-                  <div className="absolute right-0 mt-3 w-52 bg-white border border-gray-100 shadow-2xl z-[100] py-2">
-                    <Link
-                      to="/profile"
-                      onClick={() => setShowUserMenu(false)}
-                      className="flex items-center gap-2 px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:bg-gray-50 transition-colors"
-                    >
-                      <UserCircle size={16} />
-                      Profile
-                    </Link>
-
-                    <button
-                      type="button"
-                      onClick={logoutHandler}
-                      className="w-full flex items-center gap-2 px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-red-500 hover:bg-red-50 transition-colors"
-                    >
-                      <LogOut size={16} />
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <Link
-                to="/login"
-                aria-label="Login"
-                className="h-11 w-11 sm:h-12 sm:w-12 lg:h-[60px] lg:w-[60px] inline-flex items-center justify-center border border-gray-200 text-onyx hover:border-onyx hover:text-gold hover:bg-gray-50 transition-colors"
-              >
-                <User size={23} strokeWidth={1.9} />
-              </Link>
-            )}
-
-            {/* Admin Menu */}
-            {userInfo?.isAdmin && (
-              <div className="relative hidden lg:block">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowAdminMenu((prev) => !prev)
-                    setShowUserMenu(false)
-                  }}
-                  className="h-12 lg:h-[60px] inline-flex items-center gap-1 border border-gold/40 px-3 text-gold font-black transition-colors text-[10px] uppercase tracking-[0.2em] hover:bg-gold hover:text-onyx"
-                >
-                  Admin
-
-                  <ChevronDown
-                    size={14}
-                    className={`transition-transform ${
-                      showAdminMenu ? 'rotate-180' : ''
-                    }`}
-                  />
-                </button>
-
-                {showAdminMenu && (
-                  <div className="absolute right-0 mt-3 w-48 bg-white border border-gray-100 shadow-2xl z-[100] py-2">
-                    <Link
-                      to="/admin/dashboard"
-                      onClick={() => setShowAdminMenu(false)}
-                      className="flex items-center gap-2 px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:bg-gray-50 transition-colors"
-                    >
-                      <LayoutDashboard size={16} />
-                      Dashboard
-                    </Link>
-
-                    <Link
-                      to="/admin/productlist"
-                      onClick={() => setShowAdminMenu(false)}
-                      className="flex items-center gap-2 px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:bg-gray-50 transition-colors"
-                    >
-                      Products
-                    </Link>
-
-                    <Link
-                      to="/admin/orderlist"
-                      onClick={() => setShowAdminMenu(false)}
-                      className="flex items-center gap-2 px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:bg-gray-50 transition-colors"
-                    >
-                      Orders
-                    </Link>
-                  </div>
-                )}
-              </div>
-            )}
+                </Link>
+              )}
+            </div>
 
             {/* Cart */}
             <Link
               to="/cart"
-              aria-label={`Cart with ${cartCount} items`}
-              className="h-11 w-11 sm:h-12 sm:w-12 lg:h-[60px] lg:w-[60px] inline-flex items-center justify-center bg-white border border-gray-200 text-onyx hover:border-onyx hover:text-gold hover:bg-gray-50 transition-colors relative"
+              aria-label="Cart"
+              className="relative flex items-center justify-center text-gray-400 hover:text-[#d6ad3c] transition-colors"
             >
-              <ShoppingCart size={23} strokeWidth={1.9} />
+              <ShoppingBag
+                size={14}
+                strokeWidth={1.7}
+              />
 
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-gold text-onyx text-[9px] font-black h-5 min-w-5 px-1 rounded-full flex items-center justify-center border-2 border-white">
+                <span className="absolute -top-[7px] -right-[8px] min-w-[13px] h-[13px] px-[3px] rounded-full bg-[#d6ad3c] text-black text-[7px] font-black flex items-center justify-center">
                   {cartCount}
                 </span>
               )}
             </Link>
 
-            {/* Mobile Menu Button */}
-            <button
-              type="button"
-              onClick={() => {
-                setIsMobileMenuOpen((prev) => !prev)
-                setShowUserMenu(false)
-                setShowAdminMenu(false)
-              }}
-              className="h-11 w-11 inline-flex lg:hidden items-center justify-center border border-gray-200 text-onyx hover:border-onyx hover:text-gold transition-colors"
-              aria-label="Toggle navigation menu"
-              aria-expanded={isMobileMenuOpen}
-            >
-              {isMobileMenuOpen ? (
-                <X size={22} />
-              ) : (
-                <Menu size={22} />
-              )}
-            </button>
-
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100 absolute inset-x-0 top-[76px] z-40 shadow-2xl">
-          <div className="px-5 py-5 space-y-2">
-
-            {navItems.map((item) => (
-              <Link
-                key={item.label}
-                to={item.to}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`flex items-center justify-between border px-4 py-3 text-xs font-black uppercase tracking-[0.3em] transition-colors ${
-                  isActiveLink(item.to)
-                    ? 'bg-onyx text-white border-onyx'
-                    : 'border-gray-100 text-onyx hover:border-onyx'
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
-
+            {/* Shop Now */}
             <Link
               to="/shop"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="flex items-center justify-center bg-gold text-onyx px-4 py-3 text-xs font-black uppercase tracking-[0.3em]"
+              className="hidden sm:flex items-center justify-center h-[30px] lg:h-[34px] px-4 lg:px-5 border border-[#d6ad3c] text-[#d6ad3c] text-[7px] lg:text-[8px] uppercase tracking-[0.3em] font-black hover:bg-[#d6ad3c] hover:text-black transition-all"
             >
               Shop Now
             </Link>
 
-            {userInfo && (
-              <>
+            {/* Mobile Menu */}
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+              className="md:hidden text-white hover:text-[#d6ad3c] transition-colors"
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? (
+                <X size={20} />
+              ) : (
+                <Menu size={20} />
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Navigation */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden absolute left-0 right-0 top-[64px] bg-[#090909] border-t border-white/10 shadow-2xl">
+          <div className="px-5 py-6">
+
+            <nav className="flex flex-col">
+              {navItems.map((item) => (
                 <Link
-                  to="/profile"
+                  key={item.label}
+                  to={item.to}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center gap-2 border border-gray-100 px-4 py-3 text-xs font-black uppercase tracking-[0.3em] text-onyx"
+                  className={`border-b border-white/[0.07] py-4 text-[9px] font-bold uppercase tracking-[0.38em] ${
+                    isActiveLink(item.to)
+                      ? 'text-[#d6ad3c]'
+                      : 'text-gray-400'
+                  }`}
                 >
-                  <UserCircle size={17} />
-                  Profile
+                  {item.label}
                 </Link>
+              ))}
+            </nav>
 
-                {userInfo.isAdmin && (
-                  <Link
-                    to="/admin/dashboard"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center gap-2 border border-gold/30 px-4 py-3 text-xs font-black uppercase tracking-[0.3em] text-gold"
-                  >
-                    <LayoutDashboard size={17} />
-                    Administrator
-                  </Link>
+            <div className="pt-5 flex gap-3">
+              <Link
+                to="/shop"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex-1 flex justify-center items-center h-11 border border-[#d6ad3c] text-[#d6ad3c] text-[8px] uppercase tracking-[0.3em] font-black"
+              >
+                Shop Now
+              </Link>
+
+              <Link
+                to="/cart"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="relative h-11 w-11 border border-white/20 flex items-center justify-center text-white"
+              >
+                <ShoppingBag size={16} />
+
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 min-w-[15px] h-[15px] rounded-full bg-[#d6ad3c] text-black text-[7px] font-black flex items-center justify-center">
+                    {cartCount}
+                  </span>
                 )}
-
-                <button
-                  type="button"
-                  onClick={logoutHandler}
-                  className="flex w-full items-center gap-2 border border-red-100 px-4 py-3 text-left text-xs font-black uppercase tracking-[0.3em] text-red-500 hover:bg-red-50"
-                >
-                  <LogOut size={17} />
-                  Logout
-                </button>
-              </>
-            )}
+              </Link>
+            </div>
 
           </div>
         </div>
