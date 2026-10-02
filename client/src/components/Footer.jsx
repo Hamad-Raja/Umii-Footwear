@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
@@ -8,7 +9,7 @@ const Footer = () => {
           
           <div className="col-span-1 md:col-span-1">
             <div className="text-3xl font-heading font-extrabold tracking-tighter mb-6">
-              UMII
+              SOLEA
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
               Elevating the modern footprint with minimalist design and premium craftsmanship. Walk your truth.
@@ -18,10 +19,10 @@ const Footer = () => {
           <div>
             <h4 className="font-heading font-bold text-lg mb-6">Shop</h4>
             <ul className="space-y-4">
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">New Arrivals</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Best Sellers</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Men's Collection</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Women's Collection</a></li>
+              <li><Link to="/shop" className="text-gray-400 hover:text-white transition-colors text-sm">New Arrivals</Link></li>
+              <li><Link to="/shop" className="text-gray-400 hover:text-white transition-colors text-sm">Best Sellers</Link></li>
+              <li><Link to="/shop?category=Mens%20Sneakers" className="text-gray-400 hover:text-white transition-colors text-sm">Men's Collection</Link></li>
+              <li><Link to="/shop?category=Womens%20Sneakers" className="text-gray-400 hover:text-white transition-colors text-sm">Women's Collection</Link></li>
             </ul>
           </div>
 
@@ -57,7 +58,7 @@ const Footer = () => {
         
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500 text-sm mb-4 md:mb-0">
-            &copy; {new Date().getFullYear()} Umii Shoes. All rights reserved.
+            &copy; {new Date().getFullYear()} Solea Footwear. All rights reserved.
           </p>
           <div className="flex space-x-6">
             <a href="#" className="text-gray-500 hover:text-white transition-colors text-sm">Privacy Policy</a>

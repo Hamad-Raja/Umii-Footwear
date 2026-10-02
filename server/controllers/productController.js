@@ -1,6 +1,24 @@
 const asyncHandler = require('express-async-handler');
 const Product = require('../models/productModel');
 
+const categoryAliases = {
+    men: 'Mens Sneakers',
+    mens: 'Mens Sneakers',
+    'men sneakers': 'Mens Sneakers',
+    'mens sneakers': 'Mens Sneakers',
+    male: 'Mens Sneakers',
+    women: 'Womens Sneakers',
+    womens: 'Womens Sneakers',
+    female: 'Womens Sneakers',
+    'women sneakers': 'Womens Sneakers',
+    'womens sneakers': 'Womens Sneakers',
+};
+
+const normalizeCategory = (category) => {
+    if (!category) return null;
+    return categoryAliases[String(category).trim().toLowerCase()] || category;
+};
+
 // @desc    Fetch all products
 // @route   GET /api/products
 // @access  Public
@@ -13,7 +31,8 @@ const getProducts = asyncHandler(async (req, res) => {
         }
     } : {};
 
-    const category = req.query.category ? { category: req.query.category } : {};
+    const normalizedCategory = normalizeCategory(req.query.category);
+    const category = normalizedCategory ? { category: normalizedCategory } : {};
     
     // Sort logic
     let sortObj = {};

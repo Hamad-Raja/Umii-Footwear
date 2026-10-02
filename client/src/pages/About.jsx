@@ -5,7 +5,7 @@ export default function AboutPage() {
       <section className="min-h-[70vh] flex items-center px-6 md:px-16 lg:px-24 py-20">
         <div className="max-w-5xl">
           <p className="uppercase tracking-[0.35em] text-sm text-[#9C7A4D] mb-5">
-            About Umii
+            About Solea
           </p>
 
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif leading-tight mb-8">
@@ -13,7 +13,7 @@ export default function AboutPage() {
           </h1>
 
           <p className="text-lg md:text-xl text-[#4A4A4A] max-w-3xl leading-relaxed">
-            Umii is built for people who want shoes that feel comfortable, look refined,
+            Solea is built for people who want shoes that feel comfortable, look refined,
             and move naturally with their lifestyle. We combine modern design, premium
             detailing, and everyday practicality to create footwear that fits both casual
             moments and elevated occasions.
@@ -36,7 +36,7 @@ export default function AboutPage() {
 
           <div>
             <p className="text-[#D8D8D8] leading-relaxed mb-5">
-              We started Umii with a simple idea: footwear should never force you to
+              We started Solea with a simple idea: footwear should never force you to
               choose between style and comfort. Every pair is created with attention to
               shape, texture, fit, and finish so you can step out feeling relaxed,
               polished, and ready.
@@ -45,7 +45,7 @@ export default function AboutPage() {
             <p className="text-[#D8D8D8] leading-relaxed">
               Our designs focus on clean lines, versatile colors, and timeless details.
               Whether you are dressing for daily wear, travel, work, or weekend plans,
-              Umii shoes are made to support your pace without compromising your style.
+              Solea shoes are made to support your pace without compromising your style.
             </p>
           </div>
         </div>
@@ -102,7 +102,7 @@ export default function AboutPage() {
           </h2>
 
           <p className="text-[#3F3528] max-w-3xl mx-auto leading-relaxed text-lg">
-            Umii is more than footwear. It is a modern approach to everyday dressing:
+            Solea is more than footwear. It is a modern approach to everyday dressing:
             clean, comfortable, and thoughtfully made for people who value both design
             and movement.
           </p>

@@ -1,18 +1,41 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { Filter, ChevronDown } from 'lucide-react'
 import { useGetProductsQuery } from '../slices/productsApiSlice'
 
+const categoryOptions = [
+  { label: "Men's Sneakers", value: 'Mens Sneakers' },
+  { label: "Women's Sneakers", value: 'Womens Sneakers' },
+]
+
 const Shop = () => {
   const [filterOpen, setFilterOpen] = useState(false);
-  const { data: products, isLoading, error } = useGetProductsQuery();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedCategory = searchParams.get('category') || '';
+  const selectedSort = searchParams.get('sort') || '';
+  const { data: products, isLoading, error } = useGetProductsQuery({
+    category: selectedCategory || undefined,
+    sort: selectedSort || undefined,
+  });
+
+  const updateParam = (key, value) => {
+    const nextParams = new URLSearchParams(searchParams);
+    if (value) {
+      nextParams.set(key, value);
+    } else {
+      nextParams.delete(key);
+    }
+    setSearchParams(nextParams);
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Header & Controls */}
       <div className="flex flex-col md:flex-row justify-between items-end mb-8 border-b border-gray-200 pb-6">
         <div>
-          <h1 className="text-4xl font-heading font-extrabold text-charcoal mb-2">The Collection</h1>
+          <h1 className="text-4xl font-heading font-extrabold text-charcoal mb-2">
+            {selectedCategory || 'The Collection'}
+          </h1>
           <p className="text-gray-500 text-sm">Showing {products?.length || 0} results</p>
         </div>
         <div className="flex gap-4 mt-6 md:mt-0">
@@ -23,11 +46,15 @@ const Shop = () => {
             <Filter size={18} /> Filters
           </button>
           <div className="relative">
-            <select className="appearance-none bg-transparent border border-gray-300 rounded-sm px-4 py-2 pr-10 hover:border-charcoal transition-colors cursor-pointer focus:outline-none">
-              <option>Sort by: Featured</option>
-              <option>Price: Low to High</option>
-              <option>Price: High to Low</option>
-              <option>Newest Arrivals</option>
+            <select
+              value={selectedSort}
+              onChange={(e) => updateParam('sort', e.target.value)}
+              className="appearance-none bg-transparent border border-gray-300 rounded-sm px-4 py-2 pr-10 hover:border-charcoal transition-colors cursor-pointer focus:outline-none"
+            >
+              <option value="">Sort by: Featured</option>
+              <option value="lowest">Price: Low to High</option>
+              <option value="highest">Price: High to Low</option>
+              <option value="newest">Newest Arrivals</option>
             </select>
             <ChevronDown size={18} className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400" />
           </div>
@@ -42,9 +69,28 @@ const Shop = () => {
             <div className="mb-6">
               <h3 className="font-heading font-bold text-lg mb-3">Category</h3>
               <ul className="space-y-2 text-sm text-gray-500">
-                <li className="flex items-center gap-2"><input type="checkbox" className="accent-electric" /> Men's Sneakers</li>
-                <li className="flex items-center gap-2"><input type="checkbox" className="accent-electric" /> Women's Sneakers</li>
-                <li className="flex items-center gap-2"><input type="checkbox" className="accent-electric" /> Accessories</li>
+                <li className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="category"
+                    checked={!selectedCategory}
+                    onChange={() => updateParam('category', '')}
+                    className="accent-electric"
+                  />
+                  All Footwear
+                </li>
+                {categoryOptions.map((category) => (
+                  <li key={category.value} className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      name="category"
+                      checked={selectedCategory === category.value}
+                      onChange={() => updateParam('category', category.value)}
+                      className="accent-electric"
+                    />
+                    {category.label}
+                  </li>
+                ))}
               </ul>
             </div>
             <div className="mb-6">
@@ -79,9 +125,12 @@ const Shop = () => {
               <Link to={`/product/${product._id}`} key={product._id} className="group cursor-pointer text-decoration-none">
                 <div className="relative overflow-hidden bg-gray-100 aspect-w-4 aspect-h-5 mb-4 rounded-sm">
                   <img 
-                    src={product.images[0]} 
+                    src={product.images?.[0] || 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=1200&auto=format&fit=crop'} 
                     alt={product.name} 
                     className="w-full h-[300px] object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=1200&auto=format&fit=crop'
+                    }}
                   />
                   <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>

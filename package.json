@@ -1,5 +1,5 @@
 {
-  "name": "umii-shoes-root",
+  "name": "solea-footwear-root",
   "version": "1.0.0",
   "scripts": {
     "postinstall": "cd server && npm install && cd ../client && npm install",
