@@ -1,11 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Mail, MapPin, Phone } from 'lucide-react'
 
 const shopLinks = [
   { label: 'New Arrivals', to: '/shop?sort=newest' },
   { label: 'Men', to: '/shop?category=Mens%20Sneakers' },
   { label: 'Women', to: '/shop?category=Womens%20Sneakers' },
 ]
+
+const supportLinks = ['About Us']
 
 const Footer = () => {
   return (
