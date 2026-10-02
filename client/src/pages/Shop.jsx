@@ -29,13 +29,24 @@ const Shop = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Header & Controls */}
-      <div className="flex flex-col md:flex-row justify-between items-end mb-8 border-b border-gray-200 pb-6">
-        <div>
-          <h1 className="text-4xl font-heading font-extrabold text-charcoal mb-2">
-            {selectedCategory || 'The Collection'}
+    <div className="bg-offwhite">
+      <section className="bg-onyx text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20">
+          <p className="text-gold font-bold tracking-[0.35em] uppercase text-xs mb-4">Solea Collection</p>
+          <h1 className="text-4xl md:text-6xl font-heading font-black text-white mb-4">
+            {selectedCategory || 'All Footwear'}
           </h1>
+          <p className="text-gray-400 max-w-2xl leading-relaxed">
+            Shop refined sneakers selected for comfort, movement, and everyday styling.
+          </p>
+        </div>
+      </section>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Header & Controls */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 border-b border-gray-200 pb-6 gap-6">
+        <div>
+          <h2 className="text-2xl font-heading font-extrabold text-charcoal mb-2">Browse Products</h2>
           <p className="text-gray-500 text-sm">Showing {products?.length || 0} results</p>
         </div>
         <div className="flex gap-4 mt-6 md:mt-0">
@@ -118,12 +129,18 @@ const Shop = () => {
         <div className="flex-1">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {isLoading ? (
-                <p>Loading collection...</p>
+                <div className="col-span-full py-24 text-center text-gray-500">Loading collection...</div>
             ) : error ? (
-                <p className="text-red-500">{error?.data?.message || error.error}</p>
+                <p className="col-span-full text-red-500">{error?.data?.message || error.error}</p>
+            ) : products?.length === 0 ? (
+                <div className="col-span-full py-24 text-center bg-white border border-gray-200">
+                  <h3 className="text-xl font-heading font-bold mb-2">No products found</h3>
+                  <p className="text-gray-500 mb-6">Try clearing the category or sort filters.</p>
+                  <button onClick={() => setSearchParams({})} className="btn-luxury">Clear Filters</button>
+                </div>
             ) : products?.map((product) => (
               <Link to={`/product/${product._id}`} key={product._id} className="group cursor-pointer text-decoration-none">
-                <div className="relative overflow-hidden bg-gray-100 aspect-w-4 aspect-h-5 mb-4 rounded-sm">
+                <div className="relative overflow-hidden bg-white aspect-w-4 aspect-h-5 mb-4 rounded-sm shadow-sm">
                   <img 
                     src={product.images?.[0] || 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=1200&auto=format&fit=crop'} 
                     alt={product.name} 
@@ -139,7 +156,7 @@ const Shop = () => {
                     <h3 className="text-lg font-heading font-bold text-charcoal">{product.name}</h3>
                     <p className="text-gray-400 text-sm lowercase first-letter:uppercase">{product.category}</p>
                   </div>
-                  <p className="text-charcoal font-medium">${product.price.toFixed(2)}</p>
+                  <p className="text-charcoal font-medium">${product.price?.toFixed(2)}</p>
                 </div>
               </Link>
             ))}
@@ -147,6 +164,7 @@ const Shop = () => {
         </div>
 
       </div>
+    </div>
     </div>
   )
 }

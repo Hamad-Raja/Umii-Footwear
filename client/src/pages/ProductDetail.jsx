@@ -18,7 +18,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     if (product) {
-        setMainImage(product.images[0]);
+        setMainImage(product.images?.[0] || 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=1200&auto=format&fit=crop');
     }
   }, [product]);
 
@@ -51,6 +51,9 @@ const ProductDetail = () => {
               src={mainImage} 
               alt={product.name} 
               className="w-full h-[500px] object-cover object-center transition-all duration-700"
+              onError={(e) => {
+                e.currentTarget.src = 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=1200&auto=format&fit=crop'
+              }}
             />
           </div>
           <div className="grid grid-cols-4 gap-4">

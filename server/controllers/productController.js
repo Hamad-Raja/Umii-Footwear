@@ -1,5 +1,10 @@
 const asyncHandler = require('express-async-handler');
+const mongoose = require('mongoose');
 const Product = require('../models/productModel');
+const {
+    getFallbackProducts,
+    getFallbackProductById,
+} = require('../utils/fallbackProducts');
 
 const categoryAliases = {
     men: 'Mens Sneakers',
@@ -19,10 +24,22 @@ const normalizeCategory = (category) => {
     return categoryAliases[String(category).trim().toLowerCase()] || category;
 };
 
+const isDbConnected = () => mongoose.connection.readyState === 1;
+
 // @desc    Fetch all products
 // @route   GET /api/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
+    const normalizedCategory = normalizeCategory(req.query.category);
+
+    if (!isDbConnected()) {
+        return res.json(getFallbackProducts({
+            keyword: req.query.keyword,
+            category: normalizedCategory,
+            sort: req.query.sort,
+        }));
+    }
+
     // Advanced filtering
     const keyword = req.query.keyword ? {
         name: {
@@ -31,7 +48,6 @@ const getProducts = asyncHandler(async (req, res) => {
         }
     } : {};
 
-    const normalizedCategory = normalizeCategory(req.query.category);
     const category = normalizedCategory ? { category: normalizedCategory } : {};
     
     // Sort logic
@@ -52,6 +68,17 @@ const getProducts = asyncHandler(async (req, res) => {
 // @route   GET /api/products/:id
 // @access  Public
 const getProductById = asyncHandler(async (req, res) => {
+    if (!isDbConnected()) {
+        const fallbackProduct = getFallbackProductById(req.params.id);
+
+        if (fallbackProduct) {
+            return res.json(fallbackProduct);
+        }
+
+        res.status(404);
+        throw new Error('Product not found');
+    }
+
     const product = await Product.findById(req.params.id);
 
     if (product) {

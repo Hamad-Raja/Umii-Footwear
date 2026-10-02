@@ -51,8 +51,13 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
-  await connectDB();
-  await seedProductsIfEmpty();
+  try {
+    await connectDB();
+    await seedProductsIfEmpty();
+  } catch (error) {
+    console.error(`MongoDB unavailable: ${error.message}`);
+    console.error('Starting API with read-only starter product fallback. Fix MONGO_URI in Render to restore users, orders, and admin product edits.');
+  }
 
   return app.listen(PORT, () =>
     console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)

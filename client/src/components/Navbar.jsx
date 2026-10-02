@@ -31,7 +31,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="bg-white/90 backdrop-blur-xl sticky top-0 z-50 border-b border-gray-100 transition-all">
+    <header className="bg-white/95 backdrop-blur-xl sticky top-0 z-50 border-b border-gray-200/70 shadow-sm shadow-black/[0.02] transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           
@@ -47,7 +47,7 @@ const Navbar = () => {
 
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="text-3xl font-heading font-black tracking-tighter text-onyx">
+            <Link to="/" className="text-3xl font-heading font-black tracking-tighter text-onyx hover:text-gold transition-colors">
               SOLEA
             </Link>
           </div>
